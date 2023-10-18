@@ -7,29 +7,33 @@ import "@stdlib/deploy";
   You also need to implement one getter with the name "counter" to get the current number from the state.
 */
 
+// message can carry data or instructions that the smart contract will process when it receives this message.
 message Add {
-  queryId: Int as uint64;
-  number: Int as uint32;
+    queryId: Int as uint64;
+    number: Int as uint32;
 }
-
 message Subtract {
-  queryId: Int as uint64;
-  number: Int as uint32;
+    queryId: Int as uint64;
+    number: Int as uint32;
 }
 
+// += or -= not supported in tact
 contract Task1 with Deployable {
     counter: Int as int32;
-
-    init() {
-      self.counter = 0;
+    init(){
+        self.counter = 0;
     }
 
-    receive(msg: Add) {
+    // adding
+    receive(msg: Add){
+        self.counter = self.counter + msg.number;
     }
-    
-    receive(msg: Subtract) {
+
+    receive(msg: Subtract){
+        self.counter = self.counter - msg.number;
     }
 
     get fun counter(): Int {
+        return self.counter;
     }
 }
